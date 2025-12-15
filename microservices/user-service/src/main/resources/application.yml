@@ -30,4 +30,4 @@ jwt:
 
 logging:
   level:
-    com.ecommerce.user: DEBUG
+    com.buy01.user: DEBUG
