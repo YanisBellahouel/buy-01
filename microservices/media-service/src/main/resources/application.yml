@@ -1,0 +1,42 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: media-service
+
+  data:
+    mongodb:
+      uri: mongodb://admin:admin123@localhost:27017/mediadb?authSource=admin
+
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+jwt:
+  secret: mySecretKeyForJWTTokenGenerationMustBeLongEnoughForHS512AlgorithmToWorkProperly
+  expiration: 86400000
+
+media:
+  upload:
+    dir: ./uploads
+
+logging:
+  level:
+    com.buy01.media: DEBUG

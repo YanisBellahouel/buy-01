@@ -6,31 +6,21 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
       routes:
         - id: user-service
-          uri: lb://user-service
+          uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/users/**, /api/auth/**
-          filters:
-            - StripPrefix=0
+            - Path=/api/auth/**, /api/users/**
 
         - id: product-service
-          uri: lb://product-service
+          uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/api/products/**
-          filters:
-            - StripPrefix=0
 
         - id: media-service
-          uri: lb://media-service
+          uri: lb://MEDIA-SERVICE
           predicates:
             - Path=/api/media/**
-          filters:
-            - StripPrefix=0
 
 eureka:
   client:
@@ -40,3 +30,8 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG
