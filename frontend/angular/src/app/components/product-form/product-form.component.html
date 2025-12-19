@@ -1,0 +1,72 @@
+<div class="form-container">
+	<div class="form-card">
+		<div class="form-header">
+			<h2>{{ isEditMode ? 'Edit Product' : 'Create New Product' }}</h2>
+			<button (click)="cancel()" class="btn-close">✕</button>
+		</div>
+
+		<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+			<div class="form-group">
+				<label for="name">Product Name</label>
+				<input type="text" id="name" formControlName="name" placeholder="Enter product name"
+					[class.error]="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+				<div class="error-message" *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+					<span *ngIf="productForm.get('name')?.errors?.['required']">Product name is required</span>
+					<span *ngIf="productForm.get('name')?.errors?.['minlength']">Name must be at least 3
+						characters</span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="description">Description</label>
+				<textarea id="description" formControlName="description" rows="4"
+					placeholder="Enter product description"
+					[class.error]="productForm.get('description')?.invalid && productForm.get('description')?.touched">
+        </textarea>
+				<div class="error-message"
+					*ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
+					<span *ngIf="productForm.get('description')?.errors?.['required']">Description is required</span>
+					<span *ngIf="productForm.get('description')?.errors?.['minlength']">Description must be at least 10
+						characters</span>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="form-group">
+					<label for="price">Price ($)</label>
+					<input type="number" id="price" formControlName="price" step="0.01" placeholder="0.00"
+						[class.error]="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+					<div class="error-message"
+						*ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+						<span *ngIf="productForm.get('price')?.errors?.['required']">Price is required</span>
+						<span *ngIf="productForm.get('price')?.errors?.['min']">Price must be greater than 0</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="quantity">Quantity</label>
+					<input type="number" id="quantity" formControlName="quantity" placeholder="0"
+						[class.error]="productForm.get('quantity')?.invalid && productForm.get('quantity')?.touched">
+					<div class="error-message"
+						*ngIf="productForm.get('quantity')?.invalid && productForm.get('quantity')?.touched">
+						<span *ngIf="productForm.get('quantity')?.errors?.['required']">Quantity is required</span>
+						<span *ngIf="productForm.get('quantity')?.errors?.['min']">Quantity cannot be negative</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="error-message" *ngIf="errorMessage">
+				{{ errorMessage }}
+			</div>
+
+			<div class="form-actions">
+				<button type="button" (click)="cancel()" class="btn-secondary">
+					Cancel
+				</button>
+				<button type="submit" [disabled]="productForm.invalid || isLoading" class="btn-primary">
+					{{ isLoading ? 'Saving...' : (isEditMode ? 'Update Product' : 'Create Product') }}
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,139 @@
+.form-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	padding: 20px;
+}
+
+.form-card {
+	background: white;
+	padding: 40px;
+	border-radius: 10px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	max-width: 600px;
+}
+
+.form-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+h2 {
+	margin: 0;
+	color: #333;
+	font-size: 28px;
+}
+
+.btn-close {
+	background: none;
+	border: none;
+	font-size: 28px;
+	color: #999;
+	cursor: pointer;
+	padding: 0;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-close:hover {
+	color: #333;
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+label {
+	display: block;
+	margin-bottom: 8px;
+	color: #555;
+	font-weight: 500;
+}
+
+input,
+textarea {
+	width: 100%;
+	padding: 12px;
+	border: 2px solid #e1e1e1;
+	border-radius: 5px;
+	font-size: 14px;
+	transition: border-color 0.3s;
+	box-sizing: border-box;
+	font-family: inherit;
+}
+
+input:focus,
+textarea:focus {
+	outline: none;
+	border-color: #667eea;
+}
+
+input.error,
+textarea.error {
+	border-color: #e74c3c;
+}
+
+textarea {
+	resize: vertical;
+	min-height: 100px;
+}
+
+.error-message {
+	color: #e74c3c;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.form-actions {
+	display: flex;
+	gap: 15px;
+	margin-top: 30px;
+}
+
+button {
+	flex: 1;
+	padding: 12px;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+	transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.btn-secondary {
+	background: #e1e1e1;
+	color: #666;
+}
+
+.btn-secondary:hover {
+	background: #d1d1d1;
+}

@@ -1,0 +1,59 @@
+<div class="product-list-container">
+	<!-- Header -->
+	<header class="header">
+		<div class="container">
+			<h1>E-Commerce Platform</h1>
+			<nav>
+				<button *ngIf="authService.isSeller" (click)="goToSellerDashboard()" class="btn-secondary">
+					My Dashboard
+				</button>
+				<button *ngIf="authService.isAuthenticated" (click)="logout()" class="btn-logout">
+					Logout
+				</button>
+				<button *ngIf="!authService.isAuthenticated" routerLink="/login" class="btn-primary">
+					Login
+				</button>
+			</nav>
+		</div>
+	</header>
+
+	<!-- Main Content -->
+	<main class="main-content">
+		<div class="container">
+			<h2>All Products</h2>
+
+			<!-- Loading -->
+			<div *ngIf="isLoading" class="loading">
+				<p>Loading products...</p>
+			</div>
+
+			<!-- Error -->
+			<div *ngIf="errorMessage" class="error-banner">
+				{{ errorMessage }}
+			</div>
+
+			<!-- Products Grid -->
+			<div *ngIf="!isLoading && !errorMessage" class="products-grid">
+				<div *ngFor="let product of products" class="product-card">
+					<div class="product-image">
+						<img [src]="product.imageIds.length > 0 ? 'http://localhost:8083/uploads/' + product.imageIds[0] : 'assets/placeholder.png'"
+							[alt]="product.name" onerror="this.src='assets/placeholder.png'">
+					</div>
+					<div class="product-info">
+						<h3>{{ product.name }}</h3>
+						<p class="description">{{ product.description }}</p>
+						<div class="product-footer">
+							<span class="price">${{ product.price | number:'1.2-2' }}</span>
+							<span class="quantity">Stock: {{ product.quantity }}</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Empty State -->
+				<div *ngIf="products.length === 0" class="empty-state">
+					<p>No products available yet.</p>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>

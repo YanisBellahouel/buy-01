@@ -1,0 +1,74 @@
+<div class="media-container">
+	<!-- Header -->
+	<header class="header">
+		<div class="container">
+			<h1>Media Management</h1>
+			<button (click)="goBack()" class="btn-secondary">
+				← Back to Dashboard
+			</button>
+		</div>
+	</header>
+
+	<!-- Main Content -->
+	<main class="main-content">
+		<div class="container">
+			<!-- Upload Section -->
+			<div class="upload-section">
+				<h2>Upload New Image</h2>
+
+				<div class="upload-area">
+					<input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
+
+					<div class="preview-area" *ngIf="previewUrl">
+						<img [src]="previewUrl" alt="Preview">
+					</div>
+
+					<label for="fileInput" class="file-label" *ngIf="!previewUrl">
+						<div class="upload-icon">📁</div>
+						<p>Click to select an image</p>
+						<span class="file-info">Max size: 2MB | Formats: JPEG, PNG, GIF, WebP</span>
+					</label>
+
+					<div class="upload-actions" *ngIf="selectedFile">
+						<p class="file-name">{{ selectedFile.name }}</p>
+						<button (click)="uploadFile()" [disabled]="isUploading" class="btn-primary">
+							{{ isUploading ? 'Uploading...' : 'Upload' }}
+						</button>
+					</div>
+				</div>
+
+				<div class="success-message" *ngIf="successMessage">
+					✓ {{ successMessage }}
+				</div>
+
+				<div class="error-message" *ngIf="errorMessage">
+					✗ {{ errorMessage }}
+				</div>
+			</div>
+
+			<!-- My Media Section -->
+			<div class="media-section">
+				<h2>My Media</h2>
+
+				<div *ngIf="isLoadingMedia" class="loading">
+					Loading your media...
+				</div>
+
+				<div *ngIf="!isLoadingMedia" class="media-grid">
+					<div *ngFor="let media of myMedia" class="media-card">
+						<img [src]="getImageUrl(media.imagePath)" [alt]="media.fileName">
+						<div class="media-info">
+							<p class="file-name">{{ media.fileName }}</p>
+							<p class="file-size">{{ (media.fileSize / 1024).toFixed(2) }} KB</p>
+							<button (click)="deleteMedia(media.id)" class="btn-delete">Delete</button>
+						</div>
+					</div>
+
+					<div *ngIf="myMedia.length === 0" class="empty-state">
+						<p>No media uploaded yet.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>
