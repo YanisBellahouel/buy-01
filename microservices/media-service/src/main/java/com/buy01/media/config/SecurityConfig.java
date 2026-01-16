@@ -23,9 +23,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/media/{id}", "/api/media/product/**").permitAll()
+
+                // ✅ ACCÈS PUBLIC AUX IMAGES
+                .requestMatchers(
+                    "/api/media/*/file",
+                    "/api/media/product/**",
+                    "/api/media/*"
+                ).permitAll()
+
+                // 🔒 le reste protégé
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

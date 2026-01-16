@@ -35,7 +35,7 @@ jwt:
 
 media:
   upload:
-    dir: ./uploads
+    dir: /home/student/buy-01/microservices/media-service/uploads
 
 logging:
   level:

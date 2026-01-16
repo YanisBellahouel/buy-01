@@ -38,7 +38,7 @@
 			<div *ngIf="!isLoading && !errorMessage" class="products-grid">
 				<div *ngFor="let product of products" class="product-card">
 					<div class="product-image">
-						<img [src]="product.imageIds.length > 0 ? 'http://localhost:8083/uploads/' + product.imageIds[0] : 'assets/placeholder.png'"
+							<img [src]="product.imageIds && product.imageIds.length > 0 ? getImageUrl(product.imageIds[0]) : 'assets/placeholder.png'"
 							[alt]="product.name" onerror="this.src='assets/placeholder.png'">
 					</div>
 					<div class="product-info">

@@ -72,4 +72,8 @@ export class SellerDashboardComponent implements OnInit {
 	goToProducts(): void {
 		this.router.navigate(['/products']);
 	}
+
+	getImageUrl(imageId: string): string {
+		return `http://localhost:8083/api/media/${imageId}/file`;
+	}
 }

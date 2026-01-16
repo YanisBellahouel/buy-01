@@ -55,6 +55,25 @@
 				</div>
 			</div>
 
+			<!-- Upload d'images -->
+			<div class="form-group">
+				<label for="images">Product Images (Optional)</label>
+				<input type="file" id="images" multiple accept="image/*" (change)="onFilesSelected($event)" hidden
+					#fileInput>
+				<button type="button" (click)="fileInput.click()" class="btn-upload">
+					Choose Images
+				</button>
+				<span class="file-info">Max 2MB per image | Formats: JPEG, PNG, GIF, WebP</span>
+			</div>
+
+			<!-- Preview des images -->
+			<div class="preview-container" *ngIf="previewUrls.length > 0">
+				<div class="preview-item" *ngFor="let url of previewUrls; let i = index">
+					<img [src]="url" alt="Preview">
+					<button type="button" (click)="removePreview(i)" class="btn-remove">✕</button>
+				</div>
+			</div>
+
 			<div class="error-message" *ngIf="errorMessage">
 				{{ errorMessage }}
 			</div>

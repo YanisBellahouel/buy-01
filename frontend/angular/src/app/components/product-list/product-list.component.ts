@@ -50,4 +50,8 @@ export class ProductListComponent implements OnInit {
 	goToSellerDashboard(): void {
 		this.router.navigate(['/seller-dashboard']);
 	}
+
+	getImageUrl(imageId: string): string {
+		return `http://localhost:8083/api/media/${imageId}/file`;
+	}
 }
