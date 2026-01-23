@@ -110,8 +110,8 @@ export class MediaUploadComponent {
 		}
 	}
 
-	getImageUrl(imagePath: string): string {
-		return this.mediaService.getImageUrl(imagePath);
+	getImageUrl(mediaId: string): string {
+		return `http://localhost:8083/api/media/${mediaId}/file`;
 	}
 
 	goBack(): void {

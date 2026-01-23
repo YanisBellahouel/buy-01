@@ -73,6 +73,10 @@ export class SellerDashboardComponent implements OnInit {
 		this.router.navigate(['/products']);
 	}
 
+	goToMediaUpload(): void {
+		this.router.navigate(['/media-upload']);
+	}
+
 	getImageUrl(imageId: string): string {
 		return `http://localhost:8083/api/media/${imageId}/file`;
 	}

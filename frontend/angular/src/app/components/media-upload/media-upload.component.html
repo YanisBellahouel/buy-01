@@ -56,7 +56,7 @@
 
 				<div *ngIf="!isLoadingMedia" class="media-grid">
 					<div *ngFor="let media of myMedia" class="media-card">
-						<img [src]="getImageUrl(media.imagePath)" [alt]="media.fileName">
+						<img [src]="getImageUrl(media.id)" [alt]="media.fileName">
 						<div class="media-info">
 							<p class="file-name">{{ media.fileName }}</p>
 							<p class="file-size">{{ (media.fileSize / 1024).toFixed(2) }} KB</p>
