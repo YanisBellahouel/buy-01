@@ -1,56 +1,58 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+        nodejs 'NodeJS'
+    }
+
     stages {
 
-        stage('Checkout') {
+        stage('Build Backend (User Service)') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Build Backend') {
-            steps {
-                sh 'cd backend && mvn clean package -DskipTests'
+                dir('microservices/user-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
 
         stage('Backend Tests (JUnit)') {
             steps {
-                sh 'cd backend && mvn test'
+                dir('microservices/user-service') {
+                    sh 'mvn test'
+                }
             }
         }
 
-		stage('Frontend Tests (Angular - Karma)') {
-			steps {
-				sh '''
-					cd frontend/angular
-					npm install
-					npm test -- --watch=false --browsers=ChromeHeadless
-				'''
-			}
-		}
+        stage('Frontend Tests (Angular - Karma)') {
+            steps {
+                dir('frontend/angular') {
+                    sh 'npm install'
+                    sh 'npm test -- --watch=false --browsers=ChromeHeadless'
+                }
+            }
+        }
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose build'
+                sh 'docker compose build'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose up -d'
+                sh 'docker compose up -d'
             }
         }
     }
 
     post {
-        success {
-            echo '✅ Build, tests and deployment succeeded'
-        }
         failure {
             echo '❌ Pipeline failed – rollback triggered'
-            sh 'docker-compose down'
+            sh 'docker compose down || true'
+        }
+        success {
+            echo '✅ Deployment successful'
         }
     }
 }
