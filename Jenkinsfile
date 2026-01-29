@@ -30,13 +30,13 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose build'
+                sh 'docker compose build'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose up -d'
+                sh 'docker compose up -d'
             }
         }
     }
@@ -44,7 +44,7 @@ pipeline {
     post {
         failure {
             echo '❌ Pipeline failed – rollback triggered'
-            sh 'docker-compose down || true'
+            sh 'docker compose down || true'
         }
         success {
             echo '✅ Deployment successful'
