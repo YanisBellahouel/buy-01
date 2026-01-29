@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven'
-        nodejs 'NodeJS'
-    }
-
     stages {
 
         stage('Build Backend (User Service)') {
