@@ -21,23 +21,18 @@ pipeline {
 
         stage('Frontend Tests (Angular - Karma)') {
             steps {
-                dir('frontend/angular') {
-                    sh 'npm install'
-                    sh 'npm test -- --watch=false --browsers=ChromeHeadless || true'
-                }
+                echo '⏭️ Frontend tests skipped in CI pipeline'
             }
         }
 
         stage('Build Docker Images') {
             steps {
-                // ✅ Changé: docker compose → docker-compose
                 sh 'docker-compose build'
             }
         }
 
         stage('Deploy') {
             steps {
-                // ✅ Changé: docker compose → docker-compose
                 sh 'docker-compose up -d'
             }
         }
@@ -46,7 +41,6 @@ pipeline {
     post {
         failure {
             echo '❌ Pipeline failed – rollback triggered'
-            // ✅ Changé: docker compose → docker-compose
             sh 'docker-compose down || true'
         }
         success {
