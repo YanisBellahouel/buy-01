@@ -11,9 +11,25 @@ pipeline {
             }
         }
 
-        stage('Backend Tests (JUnit)') {
+        stage('Build Backend (Product Service)') {
+            steps {
+                dir('microservices/product-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Backend Tests - User Service (JUnit)') {
             steps {
                 dir('microservices/user-service') {
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Backend Tests - Product Service (JUnit)') {
+            steps {
+                dir('microservices/product-service') {
                     sh 'mvn test'
                 }
             }
