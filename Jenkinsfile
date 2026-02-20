@@ -53,19 +53,6 @@ pipeline {
             }
         }
 
-        // ⚡ Stage temporaire pour tester les emails (à supprimer après validation)
-        stage('Test Email') {
-            steps {
-                emailext (
-                    subject: "TEST EMAIL - Jenkins",
-                    body: "Si tu reçois cet email, les notifications fonctionnent ✅",
-                    to: "yanis.bellahouel76@gmail.com",
-                    from: "yanis.bellahouel76@gmail.com"
-                )
-            }
-        }
-    }
-
     post {
         success {
             echo '✅ Deployment successful'
