@@ -52,27 +52,39 @@ pipeline {
                 sh 'docker-compose up -d'
             }
         }
+
+        // ⚡ Stage temporaire pour tester les emails (à supprimer après validation)
+        stage('Test Email') {
+            steps {
+                emailext (
+                    subject: "TEST EMAIL - Jenkins",
+                    body: "Si tu reçois cet email, les notifications fonctionnent ✅",
+                    to: "yanis.bellahouel76@gmail.com",
+                    from: "yanis.bellahouel76@gmail.com"
+                )
+            }
+        }
     }
 
-	post {
-    success {
-        echo '✅ Deployment successful'
-        emailext (
-            subject: "✅ SUCCESS - Build ${env.JOB_NAME}",
-            body: "Le build a réussi 🎉\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
-            to: "yanis.bellahouel76@gmail.com"
-			from: "yanis.bellahouel76@gmail.com"
-        )
+    post {
+        success {
+            echo '✅ Deployment successful'
+            emailext (
+                subject: "✅ SUCCESS - Build ${env.JOB_NAME}",
+                body: "Le build a réussi 🎉\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
+                to: "yanis.bellahouel76@gmail.com",
+                from: "yanis.bellahouel76@gmail.com"
+            )
+        }
+        failure {
+            echo '❌ Pipeline failed – rollback triggered'
+            sh 'docker-compose down || true'
+            emailext (
+                subject: "❌ FAILURE - Build ${env.JOB_NAME}",
+                body: "Le build a échoué ❌\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
+                to: "yanis.bellahouel76@gmail.com",
+                from: "yanis.bellahouel76@gmail.com"
+            )
+        }
     }
-    failure {
-        echo '❌ Pipeline failed – rollback triggered'
-        sh 'docker-compose down || true'
-        emailext (
-            subject: "❌ FAILURE - Build ${env.JOB_NAME}",
-            body: "Le build a échoué ❌\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
-            to: "yanis.bellahouel76@gmail.com"
-			from: "yanis.bellahouel76@gmail.com"
-        )
-    }
-}
 }
