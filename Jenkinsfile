@@ -61,6 +61,7 @@ pipeline {
             subject: "✅ SUCCESS - Build ${env.JOB_NAME}",
             body: "Le build a réussi 🎉\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
             to: "yanis.bellahouel76@gmail.com"
+			from: "yanis.bellahouel76@gmail.com"
         )
     }
     failure {
@@ -70,6 +71,7 @@ pipeline {
             subject: "❌ FAILURE - Build ${env.JOB_NAME}",
             body: "Le build a échoué ❌\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
             to: "yanis.bellahouel76@gmail.com"
+			from: "yanis.bellahouel76@gmail.com"
         )
     }
 }
