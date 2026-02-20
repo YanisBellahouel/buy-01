@@ -54,25 +54,28 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo '✅ Deployment successful'
-            emailext (
-                subject: "✅ SUCCESS - Build ${env.JOB_NAME}",
-                body: "Le build a réussi 🎉\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
-                to: "yanis.bellahouel76@gmail.com",
-                from: "yanis.bellahouel76@gmail.com"
-            )
-        }
-        failure {
-            echo '❌ Pipeline failed – rollback triggered'
-            sh 'docker-compose down || true'
-            emailext (
-                subject: "❌ FAILURE - Build ${env.JOB_NAME}",
-                body: "Le build a échoué ❌\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
-                to: "yanis.bellahouel76@gmail.com",
-                from: "yanis.bellahouel76@gmail.com"
-            )
-        }
-    }
+	post {
+		success {
+			echo '✅ Deployment successful'
+			emailext (
+				subject: "SUCCESS: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
+				body: """Le build a réussi 🎉
+						Job: ${env.JOB_NAME}
+						Build: ${env.BUILD_NUMBER}
+						URL: ${env.BUILD_URL}""",
+				to: "yanis.bellahouel76@gmail.com",
+				mimeType: 'text/plain'
+			)
+		}
+		failure {
+			echo '❌ Pipeline failed'
+			emailext (
+				subject: "FAILURE: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
+				body: """Le build a échoué ❌
+						Vérifiez les logs ici : ${env.BUILD_URL}console""",
+				to: "yanis.bellahouel76@gmail.com",
+				mimeType: 'text/plain'
+			)
+		}
+	}
 }
