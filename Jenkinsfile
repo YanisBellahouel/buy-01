@@ -54,13 +54,23 @@ pipeline {
         }
     }
 
-    post {
-        failure {
-            echo '❌ Pipeline failed – rollback triggered'
-            sh 'docker-compose down || true'
-        }
-        success {
-            echo '✅ Deployment successful'
-        }
+	post {
+    success {
+        echo '✅ Deployment successful'
+        emailext (
+            subject: "✅ SUCCESS - Build ${env.JOB_NAME}",
+            body: "Le build a réussi 🎉\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
+            to: "yanis.bellahouel76@gmail.com"
+        )
     }
+    failure {
+        echo '❌ Pipeline failed – rollback triggered'
+        sh 'docker-compose down || true'
+        emailext (
+            subject: "❌ FAILURE - Build ${env.JOB_NAME}",
+            body: "Le build a échoué ❌\n\nJob: ${env.JOB_NAME}\nBuild: ${env.BUILD_NUMBER}",
+            to: "yanis.bellahouel76@gmail.com"
+        )
+    }
+}
 }
