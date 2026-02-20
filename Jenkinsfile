@@ -57,24 +57,20 @@ pipeline {
 	post {
 		success {
 			echo '✅ Deployment successful'
-			emailext (
+			mail(
 				subject: "SUCCESS: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
-				body: """Le build a réussi 🎉
-						Job: ${env.JOB_NAME}
-						Build: ${env.BUILD_NUMBER}
-						URL: ${env.BUILD_URL}""",
-				to: "yanis.bellahouel76@gmail.com",
-				mimeType: 'text/plain'
+				body: """Le build a réussi ✅
+						Consultez les détails ici : ${env.BUILD_URL}""",
+				to: "yanis.bellahouel76@gmail.com"
 			)
 		}
 		failure {
 			echo '❌ Pipeline failed'
-			emailext (
+			mail(
 				subject: "FAILURE: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
 				body: """Le build a échoué ❌
-						Vérifiez les logs ici : ${env.BUILD_URL}console""",
-				to: "yanis.bellahouel76@gmail.com",
-				mimeType: 'text/plain'
+						Consultez les détails ici : ${env.BUILD_URL}""",
+				to: "yanis.bellahouel76@gmail.com"
 			)
 		}
 	}
