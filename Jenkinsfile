@@ -41,10 +41,11 @@ pipeline {
                 dir('microservices/user-service') {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
-                        mvn clean verify sonar:sonar \
-                          -Dsonar.projectKey=user-service \
-                          -Dsonar.host.url=http://host.docker.internal:9000 \
-                          -Dsonar.token=sqp_d2108a39e183898c24d140325ed82921a8a45dca
+                        mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+						-Dsonar.projectKey=sonarbuy \
+						-Dsonar.projectName='sonarbuy' \
+						-Dsonar.host.url=http://localhost:9000 \
+						-Dsonar.token=sqp_f38dc2c462c8c8aa70dca261a04b0698c2072a09
                         '''
                     }
                 }
