@@ -35,6 +35,30 @@ pipeline {
             }
         }
 
+        // 🔍 SONARQUBE ANALYSIS
+        stage('SonarQube Analysis - User Service') {
+            steps {
+                dir('microservices/user-service') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                        mvn clean verify sonar:sonar \
+                          -Dsonar.projectKey=user-service \
+                          -Dsonar.host.url=http://host.docker.internal:9000 \
+                          -Dsonar.token=sqp_fa504a9ed051faec67fb13609224df8636c291fd
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
         stage('Frontend Tests (Angular - Karma)') {
             steps {
                 echo '⏭️ Frontend tests skipped in CI pipeline'
@@ -54,24 +78,24 @@ pipeline {
         }
     }
 
-	post {
-		success {
-			echo '✅ Deployment successful'
-			mail(
-				subject: "SUCCESS: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
-				body: """Le build a réussi ✅
-						Consultez les détails ici : ${env.BUILD_URL}""",
-				to: "yanis.bellahouel76@gmail.com"
-			)
-		}
-		failure {
-			echo '❌ Pipeline failed'
-			mail(
-				subject: "FAILURE: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
-				body: """Le build a échoué ❌
-						Consultez les détails ici : ${env.BUILD_URL}""",
-				to: "yanis.bellahouel76@gmail.com"
-			)
-		}
-	}
+    post {
+        success {
+            echo '✅ Deployment successful'
+            mail(
+                subject: "SUCCESS: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
+                body: """Le build a réussi ✅
+Consultez les détails ici : ${env.BUILD_URL}""",
+                to: "yanis.bellahouel76@gmail.com"
+            )
+        }
+        failure {
+            echo '❌ Pipeline failed'
+            mail(
+                subject: "FAILURE: Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}]",
+                body: """Le build a échoué ❌
+Consultez les détails ici : ${env.BUILD_URL}""",
+                to: "yanis.bellahouel76@gmail.com"
+            )
+        }
+    }
 }
