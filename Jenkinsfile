@@ -43,8 +43,8 @@ pipeline {
                         sh '''
                         mvn clean verify sonar:sonar \
                           -Dsonar.projectKey=user-service \
-                          -Dsonar.host.url=http://172.17.0.1:9000 \
-                          -Dsonar.token=sqp_fa504a9ed051faec67fb13609224df8636c291fd
+                          -Dsonar.host.url=http://host.docker.internal:9000 \
+                          -Dsonar.token=sqp_d2108a39e183898c24d140325ed82921a8a45dca
                         '''
                     }
                 }
