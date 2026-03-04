@@ -73,13 +73,21 @@ pipeline {
         }
 
 stage('Deploy') {
-            steps {
-                // Le flag -v supprime aussi les volumes anonymes si nécessaire
-                // Le --remove-orphans nettoie les services qui ne sont plus dans le fichier
-                sh 'docker-compose down'
-                sh 'docker-compose up -d'
-            }
+    steps {
+        script {
+            // 1. On force l'arrêt et la suppression de tout ce qui traîne
+            // --remove-orphans est crucial ici
+            sh 'docker-compose down --remove-orphans'
+
+            // 2. Sécurité supplémentaire : on essaie de supprimer les conteneurs
+            // par nom au cas où ils ne seraient pas liés au compose
+            sh 'docker rm -f mongodb zookeeper || true'
+
+            // 3. On relance proprement
+            sh 'docker-compose up -d'
         }
+    }
+}
     }
 
     post {
