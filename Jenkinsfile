@@ -48,7 +48,7 @@ pipeline {
 						mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
 						-Dsonar.projectKey=sonarbuy \
 						-Dsonar.projectName='sonarbuy' \
-						-Dsonar.host.url=http://127.0.0.1:9000 \
+						-Dsonar.host.url=http://sonarqube:9000 \
 						-Dsonar.token=sqp_36fe0921599ae93e8080c69750224240205bd02c
 						'''
 					}
