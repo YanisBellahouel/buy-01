@@ -79,15 +79,9 @@ pipeline {
 stage('Deploy') {
     steps {
         script {
-            // 1. On force l'arrêt et la suppression de tout ce qui traîne
-            // --remove-orphans est crucial ici
+            // Nettoyage des services applicatifs uniquement
             sh 'docker-compose down --remove-orphans'
-
-            // 2. Sécurité supplémentaire : on essaie de supprimer les conteneurs
-            // par nom au cas où ils ne seraient pas liés au compose
-            sh 'docker rm -f mongodb zookeeper /kafka || true'
-
-            // 3. On relance proprement
+            sh 'docker rm -f mongodb zookeeper kafka || true'
             sh 'docker-compose up -d'
         }
     }
