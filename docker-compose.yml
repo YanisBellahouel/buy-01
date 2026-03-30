@@ -1,7 +1,21 @@
-version: '3.8'
-
 services:
-  # Zookeeper - nécessaire pour Kafka
+  # --- JENKINS ---
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      # Permet à Jenkins de piloter Docker sur ton hôte
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - ecommerce-network
+
+  # --- ZOOKEEPER ---
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: zookeeper
@@ -13,7 +27,7 @@ services:
     networks:
       - ecommerce-network
 
-  # Kafka
+  # --- KAFKA ---
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
@@ -32,7 +46,7 @@ services:
     networks:
       - ecommerce-network
 
-  # MongoDB
+  # --- MONGODB ---
   mongodb:
     image: mongo:7.0
     container_name: mongodb
@@ -46,9 +60,28 @@ services:
     networks:
       - ecommerce-network
 
+  # --- SONARQUBE ---
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - ecommerce-network
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+# --- DECLARATION DES VOLUMES ---
 volumes:
   mongodb_data:
-    driver: local
+  jenkins_home:
+    external: true
+    name: mr-jenk_jenkins_home
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
 
 networks:
   ecommerce-network:

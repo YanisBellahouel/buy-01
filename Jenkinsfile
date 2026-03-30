@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+	tools {
+        maven 'maven_3_9'
+    }
+
     stages {
 
         stage('Build Backend (User Service)') {
@@ -36,21 +40,21 @@ pipeline {
         }
 
         // 🔍 SONARQUBE ANALYSIS
-        stage('SonarQube Analysis - User Service') {
-            steps {
-                dir('microservices/user-service') {
-                    withSonarQubeEnv('SonarQube') {
-                        sh '''
-                        mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+		stage('SonarQube Analysis - User Service') {
+			steps {
+				dir('microservices/user-service') {
+					withSonarQubeEnv('SonarQube') {
+						sh '''
+						mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
 						-Dsonar.projectKey=sonarbuy \
 						-Dsonar.projectName='sonarbuy' \
-						-Dsonar.host.url=http://172.16.1.181:9000 \
-						-Dsonar.token=sqp_f38dc2c462c8c8aa70dca261a04b0698c2072a09
-                        '''
-                    }
-                }
-            }
-        }
+						-Dsonar.host.url=http://127.0.0.1:9000 \
+						-Dsonar.token=sqp_36fe0921599ae93e8080c69750224240205bd02c
+						'''
+					}
+				}
+			}
+		}
 
         stage('Quality Gate') {
             steps {
