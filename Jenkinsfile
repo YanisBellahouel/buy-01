@@ -72,7 +72,7 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose build'
+                sh 'docker compose build'
             }
         }
 
@@ -80,9 +80,9 @@ stage('Deploy') {
     steps {
         script {
             // Nettoyage des services applicatifs uniquement
-            sh 'docker-compose down --remove-orphans'
+            sh 'docker compose down --remove-orphans'
             sh 'docker rm -f mongodb zookeeper kafka || true'
-            sh 'docker-compose up -d'
+            sh 'docker compose up -d'
         }
     }
 }
