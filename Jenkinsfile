@@ -43,19 +43,22 @@ pipeline {
 		stage('SonarQube Analysis - User Service') {
 			steps {
 				dir('microservices/user-service') {
-					withSonarQubeEnv('SonarQube') {
-						sh '''
-						mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-						-Dsonar.projectKey=sonarbuy \
-						-Dsonar.projectName='sonarbuy' \
-						-Dsonar.host.url=http://sonarqube:9000 \
-						-Dsonar.token=sqp_36fe0921599ae93e8080c69750224240205bd02c
-						'''
+					// On récupère le secret de Jenkins et on le met dans la variable SONAR_AUTH
+					withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_AUTH')]) {
+						withSonarQubeEnv('SonarQube') {
+							sh """
+							mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+							-Dsonar.projectKey=sonarbuy \
+							-Dsonar.projectName='sonarbuy' \
+							-Dsonar.host.url=http://sonarqube:9000 \
+							-Dsonar.token=${SONAR_AUTH}
+							"""
+						}
 					}
 				}
 			}
 		}
-		
+
 
         stage('Quality Gate') {
             steps {
