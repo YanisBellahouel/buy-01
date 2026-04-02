@@ -10,6 +10,6 @@ class ProductApplicationTests {
 
     @Test
     void contextLoads() {
-        // assertTrue(false, "Intentional failure for CI audit");
+        assertTrue(false, "Intentional failure for CI audit");
     }
 }
