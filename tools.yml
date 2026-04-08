@@ -1,6 +1,6 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    build: . # <--- On lui dit de construire l'image à partir du Dockerfile local
     container_name: jenkins
     privileged: true
     user: root
